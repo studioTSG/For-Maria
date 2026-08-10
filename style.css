@@ -1,0 +1,190 @@
+.hero-image {
+    width: min(80vw, 420px);
+    height: 520px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 45px;
+}
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #f7f5f0;
+    color: #1f2d25;
+    font-family: Arial, sans-serif;
+}
+
+.home {
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+    padding: 60px 25px;
+}
+
+.eyebrow {
+    margin: 0 0 20px 0;
+
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    font-weight: 600;
+
+    color: #64766a;
+}
+
+h1 {
+    margin: 0;
+
+    font-size: clamp(3.5rem, 12vw, 7rem);
+    font-weight: 400;
+    letter-spacing: -0.05em;
+}
+
+h1 span {
+    font-size: 0.45em;
+    vertical-align: middle;
+    color: #7b927f;
+}
+
+.intro {
+    margin-top: 25px;
+
+    font-size: 1.1rem;
+    font-weight: 300;
+
+    color: #59645e;
+}
+.navigation {
+    display: flex;
+    gap: 12px;
+    margin-top: 35px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.nav-button {
+    display: inline-block;
+
+    padding: 13px 20px;
+
+    background: #ffffff;
+    color: #1f2d25;
+
+    border: 1px solid #dfe3df;
+    border-radius: 30px;
+
+    text-decoration: none;
+    font-size: 0.9rem;
+
+    transition: all 0.2s ease;
+}
+
+.nav-button:hover {
+    transform: translateY(-2px);
+    border-color: #9aaa9d;
+}
+.bingo-page {
+    min-height: 100vh;
+    padding: 35px 16px 60px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.back-button {
+    display: inline-block;
+    margin-bottom: 60px;
+
+    color: #59645e;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.bingo-page h1 {
+    font-size: clamp(2.5rem, 10vw, 4rem);
+    margin: 0;
+}
+
+.bingo-intro {
+    color: #59645e;
+    margin-top: 15px;
+}
+.bingo-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 6px;
+
+    margin-top: 35px;
+    width: 100%;
+}
+
+.bingo-square {
+    aspect-ratio: 1 / 1;
+
+    padding: 8px;
+
+    background: #ffffff;
+    border: 1px solid #dfe3df;
+    border-radius: 10px;
+
+    color: #1f2d25;
+
+    font-family: inherit;
+    font-size: 0.72rem;
+    line-height: 1.25;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.bingo-square:hover {
+    transform: translateY(-2px);
+    border-color: #9aaa9d;
+}
+
+.bingo-square.free {
+    background: #dfe9e1;
+    font-size: 1.3rem;
+}
+.bingo-square.completed {
+    background: #dfe9e1;
+    border-color: #9aaa9d;
+    text-decoration: line-through;
+    transform: scale(0.97);
+}
+
+.bingo-square.completed::after {
+    content: " ✓";
+}
+.bingo-progress {
+    margin-top: 10px;
+
+    font-size: 0.85rem;
+    color: #7b927f;
+
+    font-weight: 600;
+}
+.content-page {
+    min-height: 100vh;
+    padding: 35px 20px 60px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.page-intro {
+    color: #59645e;
+    margin-top: 15px;
+    margin-bottom: 35px;
+}
+
+.spotify-container {
+    width: 100%;
+    margin-top: 30px;
+}
