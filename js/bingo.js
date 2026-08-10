@@ -42,14 +42,22 @@ async function loadProof(square, index) {
                 class="proof-image"
             >
             <span class="proof-check">✓</span>
-            <span class="proof-remove">×</span>
+            <span class="proof-remove">&times;</span>
         `;
     } else {
         square.innerHTML = `
-            <span class="proof-video">▶</span>
-            <span class="proof-check">✓</span>
-            <span class="proof-remove">×</span>
-        `;
+    <video
+        src="${data.signedUrl}"
+        class="proof-video"
+        muted
+        playsinline
+        preload="auto"
+    ></video>
+
+    <span class="proof-play">▶</span>
+    <span class="proof-check">✓</span>
+    <span class="proof-remove">&times;</span>
+`;
     }
 }
 bingoSquares.forEach((square, index) => {
@@ -93,13 +101,30 @@ bingoSquares.forEach((square, index) => {
         return;
     }
 
-    square.addEventListener("click", () => {
+    square.addEventListener("click", (event) => {
 
-        selectedSquare = square;
-        selectedIndex = index;
+    // Ikke åpne filvelger hvis man trykker på kontrollene
+    if (
+        event.target.closest(".proof-play") ||
+        event.target.closest(".proof-remove") ||
+        event.target.closest(".proof-video") ||
+        event.target.closest(".proof-image")
+    ) {
+        return;
+    }
 
-        proofUpload.click();
-    });
+    // Hvis ruten allerede har bevis, ikke åpne filvelger igjen
+    const existingProof = localStorage.getItem(`bingo-proof-${index}`);
+
+    if (existingProof) {
+        return;
+    }
+
+    selectedSquare = square;
+    selectedIndex = index;
+
+    proofUpload.click();
+});
 
 });
 
@@ -155,13 +180,22 @@ if (file.type.startsWith("image/")) {
         class="proof-image"
     >
     <span class="proof-check">✓</span>
-    <span class="proof-remove">×</span>
+    <span class="proof-remove">&times;</span>
 `;
 } else {
     selectedSquare.innerHTML = `
-        <span class="proof-video">▶</span>
-        <span class="proof-check">✓</span>
-    `;
+    <video
+        src="${signedData.signedUrl}"
+        class="proof-video"
+        muted
+        playsinline
+        preload="auto"
+    ></video>
+
+    <span class="proof-play">▶</span>
+    <span class="proof-check">✓</span>
+    <span class="proof-remove">&times;</span>
+`;
 }
 
 proofUpload.value = "";
@@ -198,3 +232,39 @@ document.addEventListener("click", async (event) => {
 
     updateProgress();
 });
+document.addEventListener("click", (event) => {
+    const playButton = event.target.closest(".proof-play");
+
+    if (!playButton) {
+        return;
+    }
+
+    event.stopPropagation();
+
+    const square = playButton.closest(".bingo-square");
+    const video = square.querySelector(".proof-video");
+
+    if (!video) {
+        return;
+    }
+
+    if (video.paused) {
+        video.play();
+        playButton.textContent = "❚❚";
+    } else {
+        video.pause();
+        playButton.textContent = "▶";
+    }
+});
+document.addEventListener("ended", (event) => {
+    if (!event.target.classList.contains("proof-video")) {
+        return;
+    }
+
+    const square = event.target.closest(".bingo-square");
+    const playButton = square.querySelector(".proof-play");
+
+    if (playButton) {
+        playButton.textContent = "▶";
+    }
+}, true);
