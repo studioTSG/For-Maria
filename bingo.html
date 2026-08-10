@@ -28,38 +28,47 @@
 </p>
 <div class="bingo-grid">
 
-    <button class="bingo-square">Se en papegøye</button>
-    <button class="bingo-square">Se soloppgang</button>
-    <button class="bingo-square">Drikke kokosnøtt</button>
-    <button class="bingo-square">Høre samba</button>
-    <button class="bingo-square">Se en ape</button>
+    <button class="bingo-square" data-proof="true">
+    Se en papegøye
+</button>
+    <button class="bingo-square" data-proof="true">Se soloppgang</button>
+    <button class="bingo-square" data-proof="true">Drikke kokosnøtt</button>
+    <button class="bingo-square" data-proof="true">Høre samba</button>
+    <button class="bingo-square" data-proof="true">Se en ape</button>
 
-    <button class="bingo-square">Spise noe nytt</button>
-    <button class="bingo-square">Finne et marked</button>
-    <button class="bingo-square">Se gatekunst</button>
-    <button class="bingo-square">Bade i havet</button>
-    <button class="bingo-square">Se solnedgang</button>
+    <button class="bingo-square" data-proof="true">Spise noe nytt</button>
+    <button class="bingo-square" data-proof="true">Finne et marked</button>
+    <button class="bingo-square" data-proof="true">Se gatekunst</button>
+    <button class="bingo-square" data-proof="true">Bade i havet</button>
+    <button class="bingo-square" data-proof="true">Se solnedgang</button>
 
-    <button class="bingo-square">Ta et bilde av en hund</button>
-    <button class="bingo-square">Finne noe rosa</button>
+    <button class="bingo-square" data-proof="true">Ta et bilde av en hund</button>
+    <button class="bingo-square" data-proof="true">Finne noe rosa</button>
     <button class="bingo-square free">♥</button>
-    <button class="bingo-square">Finne en palme</button>
-    <button class="bingo-square">Smake lokal mat</button>
+    <button class="bingo-square" data-proof="true">Finne en palme</button>
+    <button class="bingo-square" data-proof="true">Smake lokal mat</button>
 
-    <button class="bingo-square">Møte en ny person</button>
-    <button class="bingo-square">Se levende musikk</button>
-    <button class="bingo-square">Ta et bilde av havet</button>
-    <button class="bingo-square">Oppleve tropisk regn</button>
-    <button class="bingo-square">Finne en fin utsikt</button>
+    <button class="bingo-square" data-proof="true">Møte en ny person</button>
+    <button class="bingo-square" data-proof="true">Se levende musikk</button>
+    <button class="bingo-square" data-proof="true">Ta et bilde av havet</button>
+    <button class="bingo-square" data-proof="true">Oppleve tropisk regn</button>
+    <button class="bingo-square" data-proof="true">Finne en fin utsikt</button>
 
-    <button class="bingo-square">Se et eksotisk dyr</button>
-    <button class="bingo-square">Lære et brasiliansk slang ord</button>
-    <button class="bingo-square">Ta et bilde som minner om meg</button>
-    <button class="bingo-square">Finne noe gult</button>
-    <button class="bingo-square">Gjøre noe spontant</button>
+    <button class="bingo-square" data-proof="true">Se et eksotisk dyr</button>
+    <button class="bingo-square" data-proof="true">Lære et brasiliansk slang ord</button>
+    <button class="bingo-square" data-proof="true">Ta et bilde som minner om meg</button>
+    <button class="bingo-square" data-proof="true">Finne noe gult</button>
+    <button class="bingo-square" data-proof="true">Gjøre noe spontant</button>
 
 </div>
     </main>
+<input
+    type="file"
+    id="proof-upload"
+    accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime"
+    hidden
+>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/bingo.js"></script>
 </body>
 </html>
