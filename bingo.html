@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reisebingo – For Maria</title>
-    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="stylesheet" href="style.css?v=3">
 </head>
 
 <body>
@@ -64,6 +64,34 @@
     </main>
 <input
     type="file"
+    id="proof-upload"
+    accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime"
+    hidden
+>
+
+<div class="award-popup" id="award-popup">
+
+    <div class="award-popup-card">
+
+        <span class="award-popup-icon">🏆</span>
+
+        <p class="award-popup-small">NY UTMERKELSE</p>
+
+        <h2>Du fikk bingo!</h2>
+
+        <p>En ny premie er låst opp.</p>
+
+        <a href="awards.html" class="award-popup-button">
+            Se premien
+        </a>
+
+        <button class="award-popup-close" id="award-popup-close">
+            Fortsett bingoen
+        </button>
+
+    </div>
+
+</div>
     id="proof-upload"
     accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime"
     hidden

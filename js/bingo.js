@@ -7,13 +7,76 @@ const supabaseClient = supabase.createClient(
 );
 const bingoSquares = document.querySelectorAll(".bingo-square");
 const progressCount = document.getElementById("progress-count");
+const bingoCombinations = [
+    [0, 1, 2, 3, 4],
+    [5, 6, 7, 8, 9],
+    [10, 11, 12, 13, 14],
+    [15, 16, 17, 18, 19],
+    [20, 21, 22, 23, 24],
 
+    [0, 5, 10, 15, 20],
+    [1, 6, 11, 16, 21],
+    [2, 7, 12, 17, 22],
+    [3, 8, 13, 18, 23],
+    [4, 9, 14, 19, 24],
+
+    [0, 6, 12, 18, 24],
+    [4, 8, 12, 16, 20]
+];
+function showAwardPopup() {
+    const popup = document.getElementById("award-popup");
+
+    if (popup) {
+        popup.classList.add("show");
+    }
+}
+function checkAwards() {
+    bingoCombinations.forEach((combination, index) => {
+
+        const hasBingo = combination.every(squareIndex => {
+            const square = bingoSquares[squareIndex];
+
+            return (
+                square.classList.contains("completed") ||
+                square.classList.contains("free")
+            );
+        });
+
+        const awardKey = `award-${index + 1}`;
+
+        if (hasBingo) {
+
+    const wasUnlocked =
+        localStorage.getItem(awardKey) === "unlocked";
+
+    localStorage.setItem(awardKey, "unlocked");
+
+    if (!wasUnlocked) {
+        showAwardPopup();
+    }
+
+} else {
+            localStorage.removeItem(awardKey);
+        }
+    });
+
+    const allTasksCompleted = Array.from(bingoSquares)
+        .filter(square => !square.classList.contains("free"))
+        .every(square => square.classList.contains("completed"));
+
+    if (allTasksCompleted) {
+        localStorage.setItem("award-13", "unlocked");
+    } else {
+        localStorage.removeItem("award-13");
+    }
+}
 function updateProgress() {
     const completedSquares = document.querySelectorAll(
         ".bingo-square.completed:not(.free)"
     ).length;
 
     progressCount.textContent = completedSquares;
+    checkAwards();
 }
 async function loadProof(square, index) {
     const filePath = localStorage.getItem(`bingo-proof-${index}`);
@@ -268,3 +331,11 @@ document.addEventListener("ended", (event) => {
         playButton.textContent = "▶";
     }
 }, true);
+const awardPopup = document.getElementById("award-popup");
+const awardPopupClose = document.getElementById("award-popup-close");
+
+if (awardPopupClose) {
+    awardPopupClose.addEventListener("click", () => {
+        awardPopup.classList.remove("show");
+    });
+}
