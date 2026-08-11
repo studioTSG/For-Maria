@@ -5,6 +5,26 @@ const supabaseClient = supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
+async function saveSharedSquare(index, completed, proofPath = null, proofType = null) {
+    const { error } = await supabaseClient
+        .from("bingo_state")
+        .upsert(
+            {
+                square_index: index,
+                completed: completed,
+                proof_path: proofPath,
+                proof_type: proofType,
+                updated_at: new Date().toISOString()
+            },
+            {
+                onConflict: "square_index"
+            }
+        );
+
+    if (error) {
+        console.error("Kunne ikke synkronisere bingoruten:", error);
+    }
+}
 const bingoSquares = document.querySelectorAll(".bingo-square");
 const progressCount = document.getElementById("progress-count");
 const bingoCombinations = [
@@ -221,7 +241,12 @@ proofUpload.addEventListener("change", async () => {
     selectedSquare.classList.add("completed");
 localStorage.setItem(`bingo-${selectedIndex}`, "completed");
 localStorage.setItem(`bingo-proof-${selectedIndex}`, filePath);
-
+await saveSharedSquare(
+    selectedIndex,
+    true,
+    filePath,
+    file.type
+);
 updateProgress();
 
 const { data: signedData, error: signedError } =
@@ -264,7 +289,6 @@ if (file.type.startsWith("image/")) {
 proofUpload.value = "";
 });
 document.addEventListener("click", async (event) => {
-
     if (!event.target.classList.contains("proof-remove")) {
         return;
     }
@@ -289,12 +313,73 @@ document.addEventListener("click", async (event) => {
     localStorage.removeItem(`bingo-proof-${index}`);
     localStorage.removeItem(`bingo-${index}`);
 
-    square.classList.remove("completed");
+    await saveSharedSquare(
+        index,
+        false,
+        null,
+        null
+    );
 
+    square.classList.remove("completed");
     square.textContent = square.dataset.originalText;
 
     updateProgress();
 });
+async function loadSharedBingo() {
+    const { data, error } = await supabaseClient
+        .from("bingo_state")
+        .select("*");
+
+    if (error) {
+        console.error("Kunne ikke hente felles bingo:", error);
+        return;
+    }
+
+    for (const row of data) {
+        const square = bingoSquares[row.square_index];
+
+        if (!square) {
+            continue;
+        }
+
+        if (row.completed) {
+            square.classList.add("completed");
+            localStorage.setItem(
+                `bingo-${row.square_index}`,
+                "completed"
+            );
+        } else {
+            square.classList.remove("completed");
+                   localStorage.removeItem(
+            `bingo-${row.square_index}`
+        );
+    }
+
+    if (row.proof_path) {
+        localStorage.setItem(
+            `bingo-proof-${row.square_index}`,
+            row.proof_path
+        );
+
+        await loadProof(
+            square,
+            row.square_index
+        );
+    } else {
+        localStorage.removeItem(
+            `bingo-proof-${row.square_index}`
+        );
+
+        if (!square.classList.contains("free")) {
+            square.textContent = square.dataset.originalText;
+        }
+    }
+}
+
+updateProgress();
+}
+
+
 document.addEventListener("click", (event) => {
     const playButton = event.target.closest(".proof-play");
 
@@ -319,6 +404,8 @@ document.addEventListener("click", (event) => {
         playButton.textContent = "▶";
     }
 });
+
+
 document.addEventListener("ended", (event) => {
     if (!event.target.classList.contains("proof-video")) {
         return;
@@ -331,6 +418,8 @@ document.addEventListener("ended", (event) => {
         playButton.textContent = "▶";
     }
 }, true);
+
+
 const awardPopup = document.getElementById("award-popup");
 const awardPopupClose = document.getElementById("award-popup-close");
 
@@ -339,3 +428,70 @@ if (awardPopupClose) {
         awardPopup.classList.remove("show");
     });
 }
+
+
+loadSharedBingo();
+
+
+const bingoChannel = supabaseClient
+    .channel("shared-bingo")
+    .on(
+        "postgres_changes",
+        {
+            event: "*",
+            schema: "public",
+            table: "bingo_state"
+        },
+        async (payload) => {
+            const row = payload.new;
+
+            if (!row || row.square_index === undefined) {
+                return;
+            }
+
+            const square = bingoSquares[row.square_index];
+
+            if (!square) {
+                return;
+            }
+
+            if (row.completed) {
+                square.classList.add("completed");
+
+                localStorage.setItem(
+                    `bingo-${row.square_index}`,
+                    "completed"
+                );
+            } else {
+                square.classList.remove("completed");
+
+                localStorage.removeItem(
+                    `bingo-${row.square_index}`
+                );
+            }
+
+            if (row.proof_path) {
+                localStorage.setItem(
+                    `bingo-proof-${row.square_index}`,
+                    row.proof_path
+                );
+
+                await loadProof(
+                    square,
+                    row.square_index
+                );
+            } else {
+                localStorage.removeItem(
+                    `bingo-proof-${row.square_index}`
+                );
+
+                if (!square.classList.contains("free")) {
+                    square.textContent =
+                        square.dataset.originalText;
+                }
+            }
+
+            updateProgress();
+        }
+    )
+    .subscribe();
