@@ -402,9 +402,19 @@ h1 span {
 .redeemed-text {
     display: none;
 
-    margin: 5px 0 0;
-    font-size: 0.78rem;
+    margin-top: 5px;
+    padding: 9px 14px;
+
+    border: 1px solid #cdd6cf;
+    border-radius: 20px;
+
+    background: #edf4ee;
     color: #7b927f;
+
+    font-family: inherit;
+    font-size: 0.78rem;
+
+    cursor: pointer;
 }
 
 .letter-overlay {

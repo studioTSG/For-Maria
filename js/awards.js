@@ -23,10 +23,12 @@ awardsCount.textContent = unlockedCount;
 
 const redeemButtons = document.querySelectorAll(".redeem-button");
 
-redeemButtons.forEach(button => {
+const redeemButtons = document.querySelectorAll(".redeem-button");
 
+redeemButtons.forEach(button => {
     const awardNumber = button.dataset.award;
-    const redeemedText = document.querySelector(
+
+    const redeemedButton = document.querySelector(
         `[data-redeemed="${awardNumber}"]`
     );
 
@@ -35,15 +37,23 @@ redeemButtons.forEach(button => {
 
     if (redeemed) {
         button.style.display = "none";
-        redeemedText.style.display = "block";
+        redeemedButton.style.display = "block";
     }
 
+    // Løs inn
     button.addEventListener("click", () => {
-
         localStorage.setItem(`redeemed-${awardNumber}`, "true");
 
         button.style.display = "none";
-        redeemedText.style.display = "block";
+        redeemedButton.style.display = "block";
+    });
+
+    // Angre innløsning
+    redeemedButton.addEventListener("click", () => {
+        localStorage.removeItem(`redeemed-${awardNumber}`);
+
+        redeemedButton.style.display = "none";
+        button.style.display = "block";
     });
 });
 
