@@ -555,3 +555,17 @@ h1 span {
 
     cursor: pointer;
 }
+.award-card.locked .redeem-button,
+.award-card.locked .redeemed-text {
+    display: none !important;
+}
+.award-card.locked .multi-redeem-button,
+.award-card.locked .multi-redeem-status {
+    display: none !important;
+}
+
+.multi-redeem-status {
+    margin: 5px 0 0;
+    font-size: 0.78rem;
+    color: #7b927f;
+}

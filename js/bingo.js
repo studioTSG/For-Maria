@@ -76,8 +76,17 @@ function checkAwards() {
     }
 
 } else {
-            localStorage.removeItem(awardKey);
-        }
+    localStorage.removeItem(awardKey);
+
+    // Nullstill flerbruks-premier når bingoen forsvinner
+    const awardNumber = index + 1;
+
+    if (awardNumber === 1 || awardNumber === 4) {
+        localStorage.removeItem(
+            `multi-redeemed-${awardNumber}`
+        );
+    }
+}
     });
 
     const allTasksCompleted = Array.from(bingoSquares)
