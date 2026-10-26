@@ -1,7 +1,7 @@
 const countdown = document.getElementById("countdown");
 
 // Dagen vi sees igjen
-const reunionDate = new Date(2026, 9, 5);
+const reunionDate = new Date(2026, 11, 16);
 
 // Dagens dato, uten klokkeslett
 const today = new Date();
